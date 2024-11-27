@@ -1,0 +1,92 @@
+@import url('https://fonts.googleapis.com/css2?family=Quicksand:wght@400;600&display=swap');
+
+.letra-blanca {
+    color: #ffffff !important;;
+}
+
+.navbar .nav-link, .navbar-brand {
+    color: white !important;
+}
+.navbar .nav-link:hover {
+    color: #cccccc !important; /* Cambia el color al pasar el mouse si lo deseas */
+}
+
+.titulo-con-icono {
+    display: inline-flex; /* Combina texto e imagen en la misma línea */
+    align-items: center; /* Alinea texto e imagen verticalmente */
+    gap: 10px; /* Espaciado entre el texto y la imagen */
+}
+
+.icono {
+    width: 45px; /* Ajusta el tamaño de la imagen */
+    height: 45px;
+}
+
+body {
+    font-family: 'Quicksand', sans-serif;
+    background-color: #e0f7fa; /* Fondo celeste pastel */
+    color: #004d40; /* Texto en color más oscuro */
+    margin: 20px;
+}
+
+h1, h2 {
+    color: #00796b; /* Encabezados de un celeste más fuerte */
+    text-align: center;
+}
+
+.container {
+    margin-bottom: 40px;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 20px 0;
+    background-color: #ffffff; /* Fondo blanco */
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    animation: fadeIn 1s ease-in-out;
+}
+
+th, td {
+    padding: 12px 15px;
+    text-align: left;
+    border-bottom: 1px solid #b2dfdb; /* Líneas divisorias en un tono celeste */
+}
+
+th {
+    background-color: #b2ebf2; /* Fondo celeste claro */
+    color: #004d40;
+    font-weight: 600;
+}
+
+td {
+    color: #004d40;
+    animation: slideIn 0.5s ease-in-out;
+}
+
+tbody tr:hover {
+    background-color: #e0f2f1; /* Color de fondo al pasar el mouse */
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes slideIn {
+    from {
+        transform: translateX(-10px);
+        opacity: 0;
+    }
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+

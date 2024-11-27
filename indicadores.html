@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="icon" type="image/png" href="logo.png">
+    <link rel="stylesheet" href="styles.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Indicadores WasteWise</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css"> <!-- Archivo CSS para estilos -->
+</head>
+<body>
+
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg" style="background-color: #2a3b50;">
+        <div class="container-fluid">
+            <a class="navbar-brand letra-blanca" href="#">
+                <img src="logo.png" alt="WasteWise Logo" width="30" height="30" class="d-inline-block align-text-top">
+                WasteWise</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link active letra-blanca" aria-current="page" href="index.html">Información General</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link letra-blanca" href="indicadores.html">Indicadores</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container mt-4">
+        <h1 class="text-center">Indicadores WasteWise</h1>
+        <!-- Contenedor Table -->
+    <div class="indicator-container">
+        <h2>Información Específica</h2>
+    
+        <div class="indicator">
+            <img src="ContenedorLogo.png" alt="Ícono" class="icono">
+            <h3 class="titulo-con-icono">Moda Semanal Nivel de Llenado</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Semana</th>
+                        <th>Nivel de Llenado</th>
+                        <th>Frecuencia</th>
+                    </tr>
+                </thead>
+                <tbody id="tableModaLlenado"></tbody>
+            </table>
+        </div>
+    
+        <div class="indicator">
+            <img src="PesoLogo.png" alt="Ícono" class="icono">
+            <h3 class="titulo-con-icono">Promedio Semanal Peso Basura</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Semana</th>
+                        <th>Promedio Peso</th>
+                    </tr>
+                </thead>
+                <tbody id="tablePromedioPeso"></tbody>
+            </table>
+        </div>
+    
+        <div class="indicator">
+            <img src="TermoLogo.png" alt="Ícono" class="icono">
+            <h3 class="titulo-con-icono">Máxima Temperatura Último Mes</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Mes</th>
+                        <th>Máxima Temperatura</th>
+                    </tr>
+                </thead>
+                <tbody id="tableMaxTemperatura"></tbody>
+            </table>
+        </div>
+    
+        <div class="indicator">
+            <img src="GasLogo.png" alt="Ícono" class="icono">
+            <h3 class="titulo-con-icono">Concentración Máxima Semanal de Gases</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Semana</th>
+                        <th>Máxima Concentración</th>
+                    </tr>
+                </thead>
+                <tbody id="tableConcentracionGas"></tbody>
+            </table>
+        </div>
+    
+        <div class="indicator">
+            <img src="AperturaLogo.png" alt="Ícono" class="icono">
+            <h3 class="titulo-con-icono">Conteo Mensual de Aperturas</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Mes</th>
+                        <th>Conteo de Aperturas</th>
+                    </tr>
+                </thead>
+                <tbody id="tableConteoAperturas"></tbody>
+            </table>
+        </div>
+    
+        <div class="indicator">
+            <img src="UbiLogo.png" alt="Ícono" class="icono">
+            <h3 class="titulo-con-icono">Frecuencia Mensual por Localidad</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Localidad</th>
+                        <th>Mes</th>
+                        <th>Frecuencia</th>
+                    </tr>
+                </thead>
+                <tbody id="tableFrecuenciaLocalidad"></tbody>
+            </table>
+        </div>
+    </div>
+    
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        const apiUrls = {
+            modaLlenado: 'http://localhost:5195/ModaSemanalNivelLlenado',
+            promedioPeso: 'http://localhost:5195/PromedioSemanalPesoBasura',
+            maxTemperatura: 'http://localhost:5195/MaximaTemperaturaUltimoMes',
+            concentracionGas: 'http://localhost:5195/ConcentracionMaximaSemanal',
+            conteoAperturas: 'http://localhost:5195/ConteoMensualAperturas',
+            frecuenciaLocalidad: 'http://localhost:5195/FrecuenciaMensualPorLocalidad'
+        };
+    
+        // Actualiza las tablas de indicadores
+        async function fetchIndicator(apiUrl, tableBodyId, rowTemplateCallback) {
+            try {
+                const response = await fetch(apiUrl);
+                if (!response.ok) throw new Error(`HTTP error: ${response.status}`);
+    
+                const data = await response.json(); // Espera un array de resultados
+                const tableBody = document.getElementById(tableBodyId);
+    
+                tableBody.innerHTML = ''; // Limpia las filas previas
+                data.forEach(record => {
+                    const row = document.createElement('tr');
+                    row.innerHTML = rowTemplateCallback(record);
+                    tableBody.appendChild(row);
+                });
+            } catch (error) {
+                console.error(`Error fetching ${apiUrl}:`, error);
+            }
+        }
+    
+        // Plantillas de fila para los indicadores
+        const templates = {
+            modaLlenado: record => `
+                <td>${record.fechaSemana}</td>
+                <td>${record.nivelLlenado}</td>
+                <td>${record.frecuencia}</td>
+            `,
+            promedioPeso: record => `
+                <td>${record.fechaSemana}</td>
+                <td>${record.promedioPeso.toFixed(2)} kg</td>
+            `,
+            maxTemperatura: record => `
+                <td>${record.fechaMes}</td>
+                <td>${record.maximaTemperatura.toFixed(2)} °C</td>
+            `,
+            concentracionGas: record => `
+                <td>${record.fechaSemana}</td>
+                <td>${record.maximaConcentracion.toFixed(2)} ppm</td>
+            `,
+            conteoAperturas: record => `
+                <td>${record.fechaMes}</td>
+                <td>${record.conteoAperturas}</td>
+            `,
+            frecuenciaLocalidad: record => `
+                <td>${record.localidad}</td>
+                <td>${record.fechaMes}</td>
+                <td>${record.frecuenciaUso}</td>
+            `
+        };
+    
+        // Llama a cada API y actualiza su tabla
+        window.onload = () => {
+            fetchIndicator(apiUrls.modaLlenado, 'tableModaLlenado', templates.modaLlenado);
+            fetchIndicator(apiUrls.promedioPeso, 'tablePromedioPeso', templates.promedioPeso);
+            fetchIndicator(apiUrls.maxTemperatura, 'tableMaxTemperatura', templates.maxTemperatura);
+            fetchIndicator(apiUrls.concentracionGas, 'tableConcentracionGas', templates.concentracionGas);
+            fetchIndicator(apiUrls.conteoAperturas, 'tableConteoAperturas', templates.conteoAperturas);
+            fetchIndicator(apiUrls.frecuenciaLocalidad, 'tableFrecuenciaLocalidad', templates.frecuenciaLocalidad);
+        };
+    </script>
+    
+    
+</body>
+</html>
